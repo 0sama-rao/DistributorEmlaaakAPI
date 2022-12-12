@@ -26,6 +26,14 @@ router.route('/users').get((request, response) => {
     })
   })
   
+//getDaccountSSA
+router.route('/accountSSA').get((request, response) => {
+    
+  db.getDaccountSSA().then((data) => {
+    response.json(data[0]);
+  })
+})
+
 
 router.route('/addUser').post((request, response) => {
     let user = {...request.body}
