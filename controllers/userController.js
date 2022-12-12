@@ -43,6 +43,18 @@ async function addUser(user) {
   }
 
 
+  async function getDaccountSSA() {
+
+    try {
+      let pool = await  sql.connect(config);
+      let users = await  pool.request()
+      .query("select * from DistributorAccountSSA"); //exexuting get User procedure
+      return users.recordsets;
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   async function createAccountSSA(user) {
     try {
@@ -217,5 +229,6 @@ async function addUser(user) {
   module.exports = {
     addUser:addUser,
     getUsers:getUsers,
+    getDaccountSSA:getDaccountSSA,
     createAccountSSA:createAccountSSA
   }
