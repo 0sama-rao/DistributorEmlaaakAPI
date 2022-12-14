@@ -46,12 +46,35 @@ router.route('/addUser').post((request, response) => {
 
 router.route('/createAccountSSA').post((request, response) => {
   let user = {...request.body}
-  db.createAccountSSA(user).then(data => {
-    response.status(200).json({data, message:"Record inserted"});
+  
+  db.CheckAccountSSA(user).then(function(result) {
+    if(user == false){
+      response.status(200).json({result, message:"Record inserted"})
+    }
+      
+      else{
+      response.status(200).json({result, message:"Record exist"})
+      //  console.log(user)
+    }
+    
   })
 })
 
-
+router.route('/createAccountRegular').post((request, response) => {
+  let user = {...request.body}
+  
+  db.CheckAccountRegular(user).then(function(result) {
+    if(result == false){
+      response.status(200).json({result, message:"Record exist"})
+    }
+      
+      else{
+      response.status(200).json({result, message:"Record inserted"})
+        // console.log(user)
+    }
+    
+  })
+})
 var port = process.env.PORT || 8060;
 app.listen(port);
 console.log('Port is listening at '+ port);
