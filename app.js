@@ -53,7 +53,7 @@ router.route('/createAccountSSA').post((request, response) => {
     }
       
       else{
-      response.status(200).json({result, message:"Record exist"})
+      response.status(200).json({result, message:"Record Inserted!"})
       //  console.log(user)
     }
     
