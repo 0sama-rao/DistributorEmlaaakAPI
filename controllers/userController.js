@@ -422,6 +422,7 @@ async function addUser(user) {
     getUsers:getUsers,
     getDaccountSSA:getDaccountSSA,
     createAccountSSA:createAccountSSA,
+    createAccountRegular:createAccountRegular,
     CheckAccountSSA:CheckAccountSSA,
     CheckAccountRegular:CheckAccountRegular
     // createAccountSSAeg:createAccountSSAeg,
