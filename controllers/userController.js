@@ -72,7 +72,7 @@ async function addUser(user) {
         }
        else {
         //  return false;
-         console.log("RECORD ALREADY EXIST")
+         console.log("RECORD EXIST")
          
        }
       
