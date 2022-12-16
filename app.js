@@ -69,7 +69,7 @@ router.route('/addUser').post((request, response) => {
 router.route('/createAccountSSA').post((request, response) => {
   let user = {...request.body}
   
-  db.CheckAccountSSA(user).then(function(result) {
+  db.createAccountSSA(user).then(function(result) {
     console.log(response.status)  
     if(request == true){
       response.status(200).json({result, message:"Record inserted"})
@@ -85,7 +85,7 @@ router.route('/createAccountSSA').post((request, response) => {
 router.route('/createAccountRegular').post((request, response) => {
   let user = {...request.body}
   
-  db.CheckAccountRegular(user).then(function(result) {
+  db.createAccountRegular(user).then(function(result) {
     if(result == false){
       response.status(200).json({result, message:"Record exist"})
     }
