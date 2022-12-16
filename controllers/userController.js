@@ -55,6 +55,103 @@ async function addUser(user) {
       console.log(error);
     }
   }
+
+  //check account SSA example 
+  async function createAccountSSAeg(user) {
+    try {
+      let pool = await sql.connect(config);
+      
+
+      // let record = result.rowsAffected[0] ;
+      
+
+      let insertUser = await pool.request()
+      .input('emlaakTransactionId', sql.UniqueIdentifier, user.emlaakTransactionId)
+      .input('Title', sql.VarChar, user.Title)
+      .input('FullName', sql.VarChar, user.FullName)
+      .input('principleCnic', sql.VarChar, user.principleCnic)
+      .input('principleCnicIssuance', sql.Date, user.principleCnicIssuance)
+      .input('principleCnicExpiry', sql.Date, user.principleCnicExpiry)
+      .input('Email', sql.VarChar, user.Email)
+      .input('bankAccountTilte', sql.VarChar, user.bankAccountTilte)
+      .input('Iban', sql.VarChar, user.Iban)
+      .input('Bank', sql.VarChar, user.Bank)
+      .input('MobileNo', sql.VarChar, user.MobileNo)
+      .input('FatherSpouse', sql.VarChar, user.FatherSpouse)
+      .input('DateOfBirth', sql.Date, user.DateOfBirth)
+      .input('Address', sql.VarChar, user.Address)
+      .input('Nominee', sql.VarChar, user.Nominee)
+      .input('NomineeCnic', sql.VarChar, user.NomineeCnic)
+      .input('NomineeCnicIssuance', sql.Date, user.NomineeCnicIssuance)
+      .input('NomineeCnicExpiry', sql.Date, user.NomineeCnicExpiry)
+      .input('SourceOfIncome', sql.VarChar, user.SourceOfIncome)
+      .input('AccountCategory', sql.VarChar, user.AccountCategory)
+      .input('PrincipleNadraFile', sql.Bit, user.PrincipleNadraFile)
+      .input('PrincipleNadraExtension', sql.VarChar, user.PrincipleNadraExtension)
+      .input('NomineeNadraFile', sql.Bit, user.NomineeNadraFile)
+      .input('NomineeNadraExtension', sql.VarChar, user.NomineeNadraExtension)
+      .input('NomineeContactNo', sql.VarChar, user.NomineeContactNo)
+      .input('MotherMaideName', sql.VarChar, user.MotherMaideName)
+      .input('IsRiskProfiling', sql.Char, user.IsRiskProfiling)
+      .input('AgeBracket', sql.VarChar, user.AgeBracket)
+      .input('InvestmentMatterKnowledge', sql.VarChar, user.InvestmentMatterKnowledge)
+      .input('MonthlyIncomeSaveRatio', sql.VarChar, user.MonthlyIncomeSaveRatio)
+      .input('HorizonOfInvestment', sql.VarChar, user.HorizonOfInvestment)
+      .input('InvestmentObjective', sql.VarChar, user.InvestmentObjective)
+      .input('RiskAppetite', sql.VarChar, user.RiskAppetite)
+      .input('FinalScore', sql.VarChar, user.FinalScore)
+      .input('occupation', sql.Bit, user.occupation)
+      .input('ZakatStatus', sql.VarChar, user.ZakatStatus)
+      .input('ZakatFile', sql.Bit, user.ZakatFile)
+      .input('ZakatFileExtension', sql.VarChar, user.ZakatFileExtension)
+      .input('CountryOfResidence', sql.Bit, user.CountryOfResidence)
+      .input('CountryOfBirth', sql.Bit, user.CountryOfBirth)
+      .input('AccountOpeningAcceptance', sql.Char, user.AccountOpeningAcceptance)
+      .input('TermsAndCondition', sql.Char, user.TermsAndCondition)
+      .input('IsInvestorOwnMobileNo', sql.Char, user.IsInvestorOwnMobileNo)
+      .input('InvestedBySelf', sql.Char, user.InvestedBySelf)
+      .input('ZakatStatusDeclaration', sql.Char, user.ZakatStatusDeclaration)
+      .input('FrontEndLoanDeclaration', sql.Char, user.FrontEndLoanDeclaration)
+      .input('RiskLevel', sql.VarChar, user.RiskLevel)
+      .input('BornInPakistan', sql.Char, user.BornInPakistan)
+      .input('PoliticallyExposedPerson', sql.Char, user.PoliticallyExposedPerson)
+      .input('InvestedForOwn', sql.Char, user.InvestedForOwn)
+      .input('RiskDisclaimer', sql.Char, user.RiskDisclaimer)
+      .input('DistributorCode', sql.Int, user.DistributorCode)
+      .input('folioNumber', sql.Int, user.folioNumber)
+      .input('Posted', sql.Char, user.Posted)
+      .input('city', sql.VarChar, user.city)
+      // .input('InvestedBySelf', sql.Char, user.InvestedBySelf)
+      // .input('InvestedBySelf', sql.Char, user.InvestedBySelf)
+
+
+      
+      .query(`insert into DistributorAccountSSA (emlaakTransactionId, Title, FullName,principleCnic, principleCnicIssuance, principleCnicExpiry, Email, bankAccountTilte, Iban, Bank, MobileNo, FatherSpouse, DateOfBirth, Address, Nominee, NomineeCnicIssuance, NomineeCnicExpiry, SourceOfIncome, AccountCategory, PrincipleNadraFile, PrincipleNadraExtension, NomineeNadraFile, NomineeNadraExtension, NomineeContactNo, MotherMaideName, IsRiskProfiling, AgeBracket, InvestmentMatterKnowledge, MonthlyIncomeSaveRatio, HorizonOfInvestment, InvestmentObjective, RiskAppetite, FinalScore, occupation, ZakatStatus, ZakatFile, ZakatFileExtension, CountryOfResidence, CountryOfBirth, AccountOpeningAcceptance, TermsAndCondition, IsInvestorOwnMobileNo, InvestedBySelf, ZakatStatusDeclaration, FrontEndLoanDeclaration, RiskLevel, BornInPakistan, PoliticallyExposedPerson, InvestedForOwn, RiskDisclaimer, DistributorCode, folioNumber, Posted, city) 
+      values(@emlaakTransactionId, @Title, @FullName, @principleCnic, @principleCnicIssuance, @principleCnicExpiry, @Email, @bankAccountTilte, @Iban, @Bank, @MobileNo, @FatherSpouse, @DateOfBirth, @Address, @Nominee, @NomineeCnicIssuance, @NomineeCnicExpiry, @SourceOfIncome, @AccountCategory, @PrincipleNadraFile, @PrincipleNadraExtension, @NomineeNadraFile, @NomineeNadraExtension, @NomineeContactNo, @MotherMaideName, @IsRiskProfiling, @AgeBracket, @InvestmentMatterKnowledge, @MonthlyIncomeSaveRatio, @HorizonOfInvestment, @InvestmentObjective, @RiskAppetite, @FinalScore, @occupation, @ZakatStatus, @ZakatFile, @ZakatFileExtension, @CountryOfResidence, @CountryOfBirth, @AccountOpeningAcceptance, @TermsAndCondition, @IsInvestorOwnMobileNo, @InvestedBySelf, @ZakatStatusDeclaration, @FrontEndLoanDeclaration, @RiskLevel, @BornInPakistan, @PoliticallyExposedPerson, @InvestedForOwn, @RiskDisclaimer, @DistributorCode, @folioNumber, @Posted, @city)`);
+      
+      // const existingRecord = await insertUser.findOne({Title: Title});
+      // if(existingRecord){
+      //   return res.status(400).json({message:"User Already exist"})
+      // };
+        // if('userName'== user.userName in sql ){
+        //     console.log("UserName already exist")}
+        
+      // return insertUser.recordsets;
+      // return console.log({messsage:"records",insertUser})
+      
+      
+      // console.log(insertUser)
+      // return insertUser.recordsets;
+     }
+  
+     
+    catch (err) { 
+      console.log(err);
+    }
+  }
+  
+
+
   async function CheckAccountSSA(user) {
     try {
       let pool = await sql.connect(config);
@@ -301,5 +398,6 @@ async function addUser(user) {
     getDaccountSSA:getDaccountSSA,
     createAccountSSA:createAccountSSA,
     CheckAccountSSA:CheckAccountSSA,
-    CheckAccountRegular:CheckAccountRegular
+    CheckAccountRegular:CheckAccountRegular,
+    createAccountSSAeg:createAccountSSAeg
   }
