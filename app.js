@@ -71,10 +71,9 @@ router.route('/createAccountSSA').post((request, response) => {
   
   db.CheckAccountSSA(user).then(function(result) {
     console.log(response.status)  
-    if(user != null){
+    if(request == true){
       response.status(200).json({result, message:"Record inserted"})
     }
-      
       else{
       response.status(500).json({result, message:"Record Not Inserted!"})
         // console.log(response.status)
