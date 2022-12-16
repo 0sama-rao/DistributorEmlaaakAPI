@@ -37,7 +37,7 @@ router.route('/accountSSA').get((request, response) => {
 
 router.route('/addUser').post((request, response) => {
     let user = {...request.body}
-    db.addUser(user).then(data => {
+    db.CheckaddUser(user).then(data => {
       response.status(200).json({data, message:"Record inserted successfully!"});
     })
   })
