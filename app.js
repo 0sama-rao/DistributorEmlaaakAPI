@@ -42,7 +42,29 @@ router.route('/addUser').post((request, response) => {
     })
   })
   
-//createAccountSSA
+//createAccountSSAeg
+
+
+  router.route('/createAccountSSAeg').post((request, response) => {
+    let user = {...request.body}
+    
+    //db.createAccountSSAeg(user).then(function(result) {
+      // console.log(response.status)  
+      // if(user != null){
+      //   response.status(200).json({result, message:"Record inserted"})
+      // }
+      db.createAccountSSAeg(user).then(data => {
+        response.status(200).json({data, message:"Record inserted successfully!"});
+      })  
+      //   else{
+      //   response.status(500).json({result, message:"Record Not Inserted!"})
+      //     // console.log(response.status)
+      // }
+      
+    })
+  
+
+
 
 router.route('/createAccountSSA').post((request, response) => {
   let user = {...request.body}
