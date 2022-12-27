@@ -2,6 +2,7 @@ var  db = require('./controllers/userController');
 var  express = require('express');
 var  bodyParser = require('body-parser');
 var  cors = require('cors');
+const { RequestError } = require('mssql');
 
 
 var  app = express();
@@ -76,11 +77,11 @@ router.route('/createAccountSSA').post((request, response) => {
   
   db.createAccountSSA(user).then(function(result) {
     console.log(response.status)  
-    if(request == true){
+    if(result == true){
       response.status(200).json({result, message:"Record inserted"})
     }
       else{
-      response.status(200).json({result, message:"Record Inserted!"})
+      response.status(200).json({result, message:"Error Inserting record or Duplicate account data!"})
         // console.log(response.status)
     }
     
@@ -90,18 +91,23 @@ router.route('/createAccountSSA').post((request, response) => {
 router.route('/createAccountRegular').post((request, response) => {
   let user = {...request.body}
   
-  db.createAccountRegular(user).then(function(result) {
-    if(result == false){
-      response.status(200).json({result, message:"Record exist"})
+   db.createAccountRegular(user).then(function(result, RequestError) {
+
+  //   response.status(200).json(err)
+    
+    if(result == true){
+      response.status(200).json({result, message:"Record Inserted"})
     }
       
       else{
-      response.status(200).json({result, message:"Record inserted"})
-        // console.log(user)
+      response.status(400).json({result,RequestError, message:"Error Inserting record or Duplicate account data!"})
+        console.log(user.emlaakTransactionId.length)  
+      // console.log(user)
     }
     
   })
 })
+
 var port = process.env.PORT || 8060;
 app.listen(port);
 console.log('Port is listening at '+ port);
