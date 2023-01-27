@@ -83,30 +83,30 @@ async function addUser(user) {
 
 
 
-  async function CheckAccountSSA(user) {
-    try {
-      let pool = await sql.connect(config);
+  // async function CheckAccountSSA(user) {
+  //   try {
+  //     let pool = await sql.connect(config);
 
-  let checkRecord = await pool.request()
-  .input('emlaakTransactionId' , sql.UniqueIdentifier, user.emlaakTransactionId)
-  .input('principleCnic' , sql.VarChar, user.principleCnic)
+  // let checkRecord = await pool.request()
+  // .input('emlaakTransactionId' , sql.UniqueIdentifier, user.emlaakTransactionId)
+  // .input('principleCnic' , sql.VarChar, user.principleCnic)
  
-      .query(`select * from DistributorAccountSSA where emlaakTransactionId = @emlaakTransactionId AND principleCnic=@principleCnic`)
-      .then(function(result){
-        //  console.log(result[3])
-       if(result.rowsAffected==0){
-         createAccountSSA(user);
-         console.log("Record inserted")
-        }
-       else {
-        //  return false;
-         console.log("RECORD EXIST")
+  //     .query(`select * from DistributorAccountSSA where emlaakTransactionId = @emlaakTransactionId AND principleCnic=@principleCnic`)
+  //     .then(function(result){
+  //       //  console.log(result[3])
+  //      if(result.rowsAffected==0){
+  //        createAccountSSA(user);
+  //        console.log("Record inserted")
+  //       }
+  //      else {
+  //       //  return false;
+  //        console.log("RECORD EXIST")
          
-       }
+  //      }
       
-      })}
-      catch(error){console.log(error)}
-    }
+  //     })}
+  //     catch(error){console.log(error)}
+  //   }
 
   
   async function createAccountSSA(user) {
@@ -331,14 +331,139 @@ async function addUser(user) {
        
     }
   }
+
+  
+  async function updateRiskProfiling(user) {
+    try {
+      let pool = await sql.connect(config);
+      let insertUser = await pool.request()
+      .input('emlaakTransactionId', sql.UniqueIdentifier, user.emlaakTransactionId)
+      .input('AgeBracket', sql.VarChar, user.AgeBracket)
+      .input('InvestmentMatterKnowledge', sql.VarChar, user.InvestmentMatterKnowledge)
+      .input('MonthlyIncomeSaveRatio', sql.VarChar, user.MonthlyIncomeSaveRatio)
+      .input('HorizonOfInvestment', sql.VarChar, user.HorizonOfInvestment)
+      .input('InvestmentObjective', sql.VarChar, user.InvestmentObjective)
+      .input('RiskAppetite', sql.VarChar, user.RiskAppetite)
+      .input('FinalScore', sql.VarChar, user.FinalScore)
+      .input('RiskDisclaimer', sql.VarChar, user.RiskDisclaimer)
+      .input('DistributorCode', sql.VarChar, user.DistributorCode)
+      
+
+      .query(`insert into DistributorUpdateRiskProfilingDetails (emlaakTransactionId, AgeBracket, InvestmentMatterKnowledge,MonthlyIncomeSaveRatio, HorizonOfInvestment, InvestmentObjective, RiskAppetite, FinalScore, RiskDisclaimer, DistributorCode) 
+                                              values(@emlaakTransactionId, @AgeBracket, @InvestmentMatterKnowledge, @MonthlyIncomeSaveRatio, @HorizonOfInvestment, @InvestmentObjective, @RiskAppetite,@FinalScore, @RiskDisclaimer, @DistributorCode)`);
+
+      
+        // if('userName'== user.userName in sql ){
+        //     console.log("UserName already exist")}
+        
+      // return insertUser.recordsets;
+      return true; //console.log({message:"Record inserted"})
+    }
+    catch (err) { 
+      // response.status(500).json(err +" ")
+      //  console.log(err +" ");
+
+      
+      return (false, err); 
+       
+    }
+  }
+
+
+  async function createAccountCallback(user) {
+    try {
+      let pool = await sql.connect(config);
+      let request = await pool.request()
+      .input('emlaakTransactionId', sql.VarChar, user.emlaakTransactionId)
+      .input('FolioNumber', sql.VarChar, user.FolioNumber)
+        
+      .query(`SELECT emlaakTransactionId FROM DistributorAccountSSA where emlaakTransactionId = @emlaakTransactionId`);
+    
+    //   .then(result => {
+            if (request.recordset.length == 0) {
+              
+              return (true,{message: "emlaakTransactionId doesn't exist !"})
+            
+            }
+            else if (request.recordset.length>0){
+              try{
+                let pool = await sql.connect(config);
+                let request2 = await pool.request()
+                .input('emlaakTransactionId', sql.VarChar, user.emlaakTransactionId)
+                .input('FolioNumber', sql.VarChar, user.FolioNumber)
+        
+                .query(`SELECT emlaakTransactionId FROM DistributorCreateAccountCallBack where emlaakTransactionId = @emlaakTransactionId`);
+                if (request2.recordset.length > 0) {
+              
+                  return (true,{message: "emlaakTransactionId alredy exist in Callback !"})
+                }
+              
+              else{
+                try{
+                  
+                  
+                  let pool = await sql.connect(config);
+                  let request3 = await pool.request()
+                  .input('emlaakTransactionId', sql.VarChar, user.emlaakTransactionId)
+                  .input('FolioNumber', sql.VarChar, user.FolioNumber)
+        
+              .query(`insert into DistributorCreateAccountCallBack(emlaakTransactionId,FolioNumber) 
+              values(@emlaakTransactionId, @FolioNumber);
+              update DistributorAccountSSA set Posted = '1' where emlaakTransactionId = @emlaakTransactionId
+               `);
+               return(true, {message:"True"})
+              }
+              catch(err){
+                 return (false,{message: "in catch"}); 
+              }
+              
+             
+
+              };
+            }
+              catch(err){
+                return (false ,{message:"in catch 02"});
+              }
+            
+            }
+
+            //   else{
+            //     try{
+      
+            //         let pool = await sql.connect(config);
+            //         let request1 = await pool.request()
+            //         .input('emlaakTransactionId', sql.VarChar, user.emlaakTransactionId)
+            //         .input('FolioNumber', sql.VarChar, user.FolioNumber)
+          
+            //     .query(`insert into DistributorCreateAccountCallBack(emlaakTransactionId,FolioNumber) 
+            //     values(@emlaakTransactionId, @FolioNumber)
+            //      `);
+            //     //and update DistributorAccountSSA SET 
+            //       return (true)
+            //       // response.send( {token})
+            //       // console.log(result.recordset.length)
+            // }
+            // catch(err){
+            //     return (false,{message:"In catch 03"})
+            // }
+            // }
+        // });
+        }
+        catch(err){
+          
+        }
+        
+      };
   module.exports = {
     addUser:addUser,
     getUsers:getUsers,
     getDaccountSSA:getDaccountSSA,
     createAccountSSA:createAccountSSA,
     createAccountRegular:createAccountRegular,
-    CheckAccountSSA:CheckAccountSSA,
-    CheckAccountRegular:CheckAccountRegular
+    //CheckAccountSSA:CheckAccountSSA,
+    CheckAccountRegular:CheckAccountRegular,
+    createAccountCallback:createAccountCallback,
+    updateRiskProfiling:updateRiskProfiling
     // createAccountSSAeg:createAccountSSAeg,
     // CheckaddUser:CheckaddUser
   }
