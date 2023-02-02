@@ -1,4 +1,5 @@
 var  db = require('./controllers/userController');
+var  db1 = require('./controllers/investment');
 
 // const jwt = require('jasonwebtoken')
 var  express = require('express');
@@ -20,13 +21,10 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use('/api', router);
 
-
 router.use((request, response, next) => {
   console.log('Method Executed !');
   next();
 });
-
-
 
 //to list all the users/investors
   router.route('/users').get((request, response) => {
@@ -44,6 +42,14 @@ router.route('/accountSSA').get((request, response) => {
   })
 })
 
+//exampleAPI 
+router.route('/getInvestment').get((request, response) => {
+    
+  db1.getInvestment().then((data) => {
+    response.json(data[0]);
+  })
+})
+
 
 router.route('/addUser').post((request, response) => {
     let user = {...request.body}
@@ -53,7 +59,6 @@ router.route('/addUser').post((request, response) => {
   })
   
 //createAccountSSAeg
-
 
   router.route('/createAccountSSAeg').post((request, response) => {
     let user = {...request.body}
@@ -71,8 +76,7 @@ router.route('/addUser').post((request, response) => {
       //     // console.log(response.status)
       // }
       
-    })
-  
+    })  
     //Create account callback
     router.route('/createAccountCallback').post((request, response) => {
       let user = {...request.body}
@@ -93,7 +97,6 @@ router.route('/addUser').post((request, response) => {
         })
       })
     
-
 
 router.route('/createAccountSSA').post((request, response) => {
   let user = {...request.body}
@@ -122,11 +125,12 @@ router.route('/createAccountRegular').post((request, response) => {
     
     if(result == true){
       response.status(200).json({result, message:"Record Inserted"})
+      console.log(result)
     }
       
       else{
       response.status(400).json({result,RequestError, message:"Error Inserting record or Duplicate account data!"})
-      console.log(user)  
+      console.log(result)  
        //console.log(user)
     }
     
@@ -151,6 +155,27 @@ router.route('/updateRiskProfiling').post((request, response) => {
        //console.log(user)
     }
     
+  })
+})
+
+
+//Create Investment
+
+router.route('/createInvestment').get((request, response) => {
+  let user = {...request.body}
+  
+  db1.getInvestmentDataFromApi(user).then(data => {
+    response.status(200).json({data});
+  })
+})
+
+//CreateCallbackInvestment
+
+router.route('/createInvestmentCallback').post((request, response) => {
+  let user = {...request.body}
+  
+  db1.createInvestmentCallback(user).then(data => {
+    response.status(200).json({data});
   })
 })
 
