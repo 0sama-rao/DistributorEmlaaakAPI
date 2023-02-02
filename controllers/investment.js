@@ -22,6 +22,7 @@ async function getInvestmentDataFromApi() {
         const response = await axios.get('https://uat.emlaakfinancials.com:2053/api/Investment/CreateInvestment');
         
         // Get the data from the response
+        // console.log(response)
         const data = response.data;
 
         // Connect to the SQL Server database
@@ -51,28 +52,34 @@ async function getInvestmentDataFromApi() {
                 .input('FundName', sql.VarChar, item.FundName)
                 .input('Amount', sql.VarChar, item.Amount)
                 .input('ConfirmIBAN', sql.VarChar, item.ConfirmIBAN)
-                .input('TransactionDate', sql.Date, item.TransactionDate)
-                .input('TransactionTime', sql.Time, item.TransactionTime)
+                .input('TransactionDate', sql.VarChar, item.TransactionDate)
+                .input('TransactionTime', sql.VarChar, item.TransactionTime)
                 .input('OneLinkTransactionID', sql.VarChar, item.OneLinkTransactionID)
                 .input('TransactionInfo', sql.VarChar, item.TransactionInfo)
                 .input('Message', sql.VarChar, item.Message)
-                .input('CdcealizationDate', sql.Date, item.CdcealizationDate)
+                .input('CdcealizationDate', sql.VarChar, item.CdcealizationDate)
                 .input('BankAccountTitle', sql.VarChar, item.BankAccountTitle)
                 .input('Bank', sql.VarChar, item.Bank)
-                .input('FundTransferDate', sql.Date, item.FundTransferDate)
+                .input('FundTransferDate', sql.VarChar, item.FundTransferDate)
                 .input('FolioNumber', sql.VarChar, item.FolioNumber)
-                .input('IbftFile', sql.Bit, item.IbftFile)
-                .input('IbftExtension', sql.Image, item.IbftExtension)
+                .input('IbftFile', sql.VarChar, item.IbftFile)
+                .input('IbftExtension', sql.VarChar, item.IbftExtension)
                 .input('TransationID', sql.VarChar, item.TransationID)
                 .input('DistributorCode', sql.Int, item.DistributorCode)
+                // .then(function validation(data){
 
+                //     if (data.emlaakTransactionId ){}
+                    
+                // })
                 .query(`INSERT INTO DistributorInvestment (emlaakTransactionId, FundName, Amount, ConfirmIBAN, TransactionDate, TransactionTime, OneLinkTransactionID, TransactionInfo, Message, CdcealizationDate, BankAccountTitle, Bank, FundTransferDate, FolioNumber, IbftFile, IbftExtension, TransationID, DistributorCode) 
                 VALUES (@emlaakTransactionId, @FundName, @Amount, @ConfirmIBAN, @TransactionDate, @TransactionTime, @OneLinkTransactionID, @TransactionInfo, @Message, @CdcealizationDate, @BankAccountTitle, @Bank, @FundTransferDate, @FolioNumber, @IbftFile, @IbftExtension, @TransationID, @DistributorCode)`);
             
-            console.log(result);
+                return(true, {message:"Data Inserted"})
+            console.log(item);
         }
     } 
 catch (error) {
+    return(false, {message:"Error, cannot push data !"})
     console.error(error);
 }}
 
