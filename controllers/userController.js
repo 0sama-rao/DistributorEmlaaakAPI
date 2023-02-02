@@ -362,8 +362,6 @@ async function addUser(user) {
     catch (err) { 
       // response.status(500).json(err +" ")
       //  console.log(err +" ");
-
-      
       return (false, err); 
        
     }
