@@ -85,43 +85,49 @@ catch (error) {
 
 
 
-async function createInvestmentCallback(user) {
+async function createInvestmentCallback(emlaakTransactionId) {
     try {
         let pool = await sql.connect(config);
         let request = await pool.request()
-        .input('emlaakTransactionId', sql.VarChar, user.emlaakTransactionId)
+        .input('emlaakTransactionId', sql.VarChar, emlaakTransactionId)
           
-        .query(`SELECT emlaakTransactionId FROM DistributorInvestmentCallBack where emlaakTransactionId = @emlaakTransactionId`);
+        .query(`SELECT emlaakTransactionId FROM DistributorInvestment where emlaakTransactionId = @emlaakTransactionId`);
 
-        if (request.recordset.length > 0) {
+        if (request.recordset.length == 0) {
               
-            return (true,{message: "emlaakTransactionId Already exist  !"})
-          
+            return (true,{message: "emlaakTransactionId Doesn't exist  !"})
           }
 
-    else {
+    else if (request.recordset.length > 0){
         
         // Save the data to the database
         
                 let pool = await sql.connect(config);
-                let request = await pool.request()
-                .input('emlaakTransactionId', sql.UniqueIdentifier, user.emlaakTransactionId)
-                .input('AmcTransactionId', sql.VarChar, user.AmcTransactionId)
-                .input('UnitType', sql.VarChar, user.UnitType)
-                .input('FundClass', sql.VarChar, user.FundClass)
-                .input('Nav', sql.VarChar, user.Nav)
-                .input('Units', sql.VarChar, user.Units)
-                .input('SalesLoad', sql.VarChar, user.SalesLoad)
-                .input('NetAmount', sql.VarChar, user.NetAmount)
-                .input('NavDate', sql.VarChar, user.NavDate)
-                .input('IsApproved', sql.VarChar, user.IsApproved)
-                .input('DistributorCode', sql.Int, user.DistributorCode)
-
-                .query(`INSERT INTO DistributorInvestmentCallBack (emlaakTransactionId, AmcTransactionId, UnitType, FundClass, Nav, Units, SalesLoad, NetAmount, NavDate, IsApproved, DistributorCode) 
-                VALUES (@emlaakTransactionId, @AmcTransactionId, @UnitType, @FundClass, @Nav, @Units, @SalesLoad, @NetAmount, @NavDate, @IsApproved, @DistributorCode)`);
+                let request2 = await pool.request()
+                .input('emlaakTransactionId', sql.UniqueIdentifier, emlaakTransactionId)
+                .query(`SELECT emlaakTransactionId FROM DistributorInvestmentCallBack where emlaakTransactionId = @emlaakTransactionId`);
+//                 .query(`insert into DistributorInvestmentCallBack(emlaakTransactionId) 
+//                 values(@emlaakTransactionId);
+//                 update DistributorInvestment set Posted = '1' where emlaakTransactionId = @emlaakTransactionId;
+//                 Select emlaakTransactionId from DistributorInvestmentCallBack where emlaakTransactionId = @emlaakTransactionId
+// `);
+            if (request2.recordset.length > 0){
+                return (true,request2.recordsets,{message:"EmlaakID already Posted !"})
+            console.log(result);}
+            else{
+                let request3 = await pool.request()
+                .input('emlaakTransactionId', sql.UniqueIdentifier, emlaakTransactionId)
+                
             
-                return (true,{message: "Success !"})
-            console.log(result);
+                // .query(`SELECT emlaakTransactionId FROM DistributorInvestmentCallBack where emlaakTransactionId = @emlaakTransactionId`);
+                .query(`insert into DistributorInvestmentCallBack(emlaakTransactionId ) 
+                values(@emlaakTransactionId);
+                update DistributorInvestment set Posted = '1' where emlaakTransactionId = @emlaakTransactionId;
+                Select emlaakTransactionId, AMCTransactionID from DistributorInvestmentCallBack where emlaakTransactionId = @emlaakTransactionId
+`);
+console.log(request3.recordsets)
+return (true,request3.recordset)
+            }
         }
     
 }catch (error) {
