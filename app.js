@@ -78,26 +78,51 @@ router.route('/addUser').post((request, response) => {
       
     })  
     //Create account callback
-    router.route('/createAccountCallback').post((request, response) => {
-      let user = {...request.body}
+    // router.route('/createAccountCallback').post((request, response) => {
+    //   let user = {...request.body}
     
-      db.createAccountCallback(user).then(function(result) { 
-          // console.log(response.status)  
+    //   db.createAccountCallback(user).then(function(result) { 
+    //       // console.log(response.status)  
 
-          response.status (200).json({result})
-          // if(result == true){
-          //   response.status(200).json({result})
-          //   console.log(result)
-          // }
-          //   else{
-          //   response.status(200).json({result})
-          //  console.log(result)
-          // }
+    //       response.status (200).json({result})
+    //       // if(result == true){
+    //       //   response.status(200).json({result})
+    //       //   console.log(result)
+    //       // }
+    //       //   else{
+    //       //   response.status(200).json({result})
+    //       //  console.log(result)
+    //       // }
           
+    //     })
+    //   })
+      
+      router.route('/createAccountCallback/:emlaakTransactionId').get((request, response) => {
+       
+        db.createAccountCallback(request.params.emlaakTransactionId).then((user) => {
+              //  response.json(user,{message:"success"})
+               response.status(200).json(user);
+        
+        // console.log(user)
+       
+        // let user = {...request.body}
+      
+        // db.createAccountCallback(user).then(function(result) { 
+        //     // console.log(response.status)  
+  
+        //     response.status (200).json({result})
+            // if(result == true){
+            //   response.status(200).json({result})
+            //   console.log(result)
+            // }
+            //   else{
+            //   response.status(200).json({result})
+            //  console.log(result)
+            // }
+            
+          })
         })
-      })
-    
-
+      
 router.route('/createAccountSSA').post((request, response) => {
   let user = {...request.body}
   
@@ -171,14 +196,18 @@ router.route('/createInvestment').get((request, response) => {
 
 //CreateCallbackInvestment
 
-router.route('/createInvestmentCallback').post((request, response) => {
-  let user = {...request.body}
+router.route('/createInvestmentCallback/:emlaakTransactionId').get((request, response) => {
   
-  db1.createInvestmentCallback(user).then(data => {
-    response.status(200).json({data});
-  })
-})
+  // db.createAccountCallback(request.params.emlaakTransactionId).then((user) => {
+  //   //  response.json(user,{message:"success"})
+  //    response.status(200).json(user);
 
+  db1.createInvestmentCallback(request.params.emlaakTransactionId).then((user) => {
+    //  response.json(user,{message:"success"})
+     response.status(200).json(user);
+  
+})
+})
 var port = process.env.PORT || 8060;
 app.listen(port);
 console.log('Port is listening at '+ port);
