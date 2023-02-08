@@ -468,11 +468,11 @@ async function addUser(user) {
                           .input('FolioNumber', sql.VarChar, FolioNumber)
                           
                            .query(`
-                           insert into DistributorCreateAccountCallBack Select emlaakTransactionId, FolioNumber, DistributorCode from DistributorAccountSSA where emlaakTransactionId = 'CA3AC4E6-B3D9-4B6C-AB8B-6916E95FD8B3';
+                           insert into DistributorCreateAccountCallBack Select emlaakTransactionId, FolioNumber, DistributorCode from DistributorAccountSSA where emlaakTransactionId = @emlaakTransactionId;
                                                    
-                                                   update DistributorAccountSSA set Posted = '1' where emlaakTransactionId = 'CA3AC4E6-B3D9-4B6C-AB8B-6916E95FD8B3';
+                                                   update DistributorAccountSSA set Posted = '1' where emlaakTransactionId = @emlaakTransactionId;
                            
-                                                   Select emlaakTransactionId, FolioNumber from DistributorAccountSSA where emlaakTransactionId = 'CA3AC4E6-B3D9-4B6C-AB8B-6916E95FD8B3'; 
+                                                   Select emlaakTransactionId, FolioNumber from DistributorAccountSSA where emlaakTransactionId = @emlaakTransactionId; 
                            `);
                         console.log(request3.recordset,"Hello4")
                           // .query(`SELECT emlaakTransactionId FROM DistributorAccountSSA where emlaakTransactionId = @emlaakTransactionId`);
