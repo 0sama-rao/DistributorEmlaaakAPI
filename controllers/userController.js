@@ -144,7 +144,7 @@ async function addUser(user) {
       .input('NomineeNadraExtension', sql.VarChar, user.NomineeNadraExtension)
       .input('NomineeContactNo', sql.VarChar, user.NomineeContactNo)
       .input('MotherMaideName', sql.VarChar, user.MotherMaideName)
-      .input('IsRiskProfiling', sql.Char, user.IsRiskProfiling)
+      .input('IsRiskProfiling', sql.Bit, user.IsRiskProfiling)
       .input('AgeBracket', sql.VarChar, user.AgeBracket)
       .input('InvestmentMatterKnowledge', sql.VarChar, user.InvestmentMatterKnowledge)
       .input('MonthlyIncomeSaveRatio', sql.VarChar, user.MonthlyIncomeSaveRatio)
@@ -168,7 +168,7 @@ async function addUser(user) {
       .input('BornInPakistan', sql.Char, user.BornInPakistan)
       .input('PoliticallyExposedPerson', sql.Char, user.PoliticallyExposedPerson)
       .input('InvestedForOwn', sql.Char, user.InvestedForOwn)
-      .input('RiskDisclaimer', sql.Char, user.RiskDisclaimer)
+      .input('RiskDisclaimer', sql.Bit, user.RiskDisclaimer)
       .input('DistributorCode', sql.Int, user.DistributorCode)
       //.input('folioNumber', sql.Int, user.folioNumber)
       .input('Posted', sql.Char, user.Posted)
@@ -467,11 +467,13 @@ async function addUser(user) {
                           .input('emlaakTransactionId', sql.VarChar, emlaakTransactionId)
                           .input('FolioNumber', sql.VarChar, FolioNumber)
                           
-                           .query(`insert into DistributorCreateAccountCallBack(emlaakTransactionId,FolioNumber) 
-                        values(@emlaakTransactionId, @FolioNumber);
-                        update DistributorAccountSSA set Posted = '1' where emlaakTransactionId = @emlaakTransactionId;
-                        Select emlaakTransactionId, FolioNumber from DistributorCreateAccountCallBack where emlaakTransactionId = @emlaakTransactionId; 
-                        `);
+                           .query(`
+                           insert into DistributorCreateAccountCallBack Select emlaakTransactionId, FolioNumber, DistributorCode from DistributorAccountSSA where emlaakTransactionId = 'CA3AC4E6-B3D9-4B6C-AB8B-6916E95FD8B3';
+                                                   
+                                                   update DistributorAccountSSA set Posted = '1' where emlaakTransactionId = 'CA3AC4E6-B3D9-4B6C-AB8B-6916E95FD8B3';
+                           
+                                                   Select emlaakTransactionId, FolioNumber from DistributorAccountSSA where emlaakTransactionId = 'CA3AC4E6-B3D9-4B6C-AB8B-6916E95FD8B3'; 
+                           `);
                         console.log(request3.recordset,"Hello4")
                           // .query(`SELECT emlaakTransactionId FROM DistributorAccountSSA where emlaakTransactionId = @emlaakTransactionId`);
                           // .query(`Select SA.emlaakTransactionId, CA.folioNumber from DistributorAccountSSA SA  INNER JOIN DistributorCreateAccountCallBack CA ON 
