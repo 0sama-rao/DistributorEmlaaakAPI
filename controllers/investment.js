@@ -136,8 +136,63 @@ return (true,request3.recordset)
 
 }
 
+
+async function createInvestment(item) {
+    try {
+      let pool = await sql.connect(config);
+      let insertInvestment = await pool.request()
+      .input('emlaakTransactionId', sql.UniqueIdentifier, item.emlaakTransactionId)
+                .input('FundName', sql.VarChar, item.FundName)
+                .input('Amount', sql.VarChar, item.Amount)
+                .input('ConfirmIBAN', sql.VarChar, item.ConfirmIBAN)
+                .input('TransactionDate', sql.VarChar, item.TransactionDate)
+                .input('TransactionTime', sql.VarChar, item.TransactionTime)
+                .input('OneLinkTransactionID', sql.VarChar, item.OneLinkTransactionID)
+                .input('TransactionInfo', sql.VarChar, item.TransactionInfo)
+                .input('Message', sql.VarChar, item.Message)
+                .input('CdcealizationDate', sql.VarChar, item.CdcealizationDate)
+                .input('BankAccountTitle', sql.VarChar, item.BankAccountTitle)
+                .input('Bank', sql.VarChar, item.Bank)
+                .input('FundTransferDate', sql.VarChar, item.FundTransferDate)
+                .input('FolioNumber', sql.VarChar, item.FolioNumber)
+                .input('IbftFile', sql.VarChar, item.IbftFile)
+                .input('IbftExtension', sql.VarChar, item.IbftExtension)
+                .input('TransationID', sql.VarChar, item.TransationID)
+                .input('Posted', sql.VarChar, item.Posted)
+                .input('DistributorCode', sql.Int, item.DistributorCode)
+
+
+      
+                .query(`INSERT INTO DistributorInvestment (emlaakTransactionId, FundName, Amount, ConfirmIBAN, TransactionDate, TransactionTime, OneLinkTransactionID, TransactionInfo, Message, CdcealizationDate, BankAccountTitle, Bank, FundTransferDate, FolioNumber, IbftFile, IbftExtension, TransationID,Posted,  DistributorCode) 
+                VALUES (@emlaakTransactionId, @FundName, @Amount, @ConfirmIBAN, @TransactionDate, @TransactionTime, @OneLinkTransactionID, @TransactionInfo, @Message, @CdcealizationDate, @BankAccountTitle, @Bank, @FundTransferDate, @FolioNumber, @IbftFile, @IbftExtension, @TransationID, @Posted,@DistributorCode)`);
+      
+      // const existingRecord = await insertUser.findOne({Title: Title});
+      // if(existingRecord){
+      //   return res.status(400).json({message:"User Already exist"})
+      // };
+        // if('userName'== user.userName in sql ){
+        //     console.log("UserName already exist")}
+        
+      // return insertUser.recordsets;
+      // return console.log({messsage:"records",insertUser})
+      
+      
+      console.log(insertInvestment)
+      // return insertUser.recordsets;
+      return true;
+    }
+  
+     
+    catch (err) { 
+     // return (false, err);
+      console.log(err+"Error");
+    }
+  }
+  
+
 module.exports ={
-    getInvestment:getInvestment,    
+getInvestment:getInvestment,    
 getInvestmentDataFromApi:getInvestmentDataFromApi,
-createInvestmentCallback:createInvestmentCallback
+createInvestmentCallback:createInvestmentCallback,
+createInvestment:createInvestment
 }

@@ -547,6 +547,7 @@ async function addUser(user) {
         }
         
       };
+      
   module.exports = {
     addUser:addUser,
     getUsers:getUsers,
