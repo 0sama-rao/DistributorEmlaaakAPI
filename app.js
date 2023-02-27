@@ -186,7 +186,7 @@ router.route('/updateRiskProfiling').post((request, response) => {
 
 //Create Investment
 
-router.route('/createInvestment').get((request, response) => {
+router.route('/getcreateInvestment').get((request, response) => {
   let user = {...request.body}
   
   db1.getInvestmentDataFromApi(user).then(data => {
@@ -194,6 +194,22 @@ router.route('/createInvestment').get((request, response) => {
   })
 })
 
+router.route('/createInvestment').post((request, response) => {
+  let item = {...request.body}
+  // console.log(item)
+  db1.createInvestment(item).then(function(result) {
+    // console.log(result)  
+    if(result == true){
+      response.status(200).json({result, message:"Investment resuest sended successfully"})
+    }
+      else{
+      response.status(409).json({result, message:"Error Inserting record or Duplicate account data!"})
+      // console.log(result)  
+      //  console.log(result.recordset.length)
+    }
+    
+  })
+})
 //CreateCallbackInvestment
 
 router.route('/createInvestmentCallback/:emlaakTransactionId').get((request, response) => {
