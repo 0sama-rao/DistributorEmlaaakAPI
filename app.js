@@ -133,7 +133,7 @@ router.route('/createAccountSSA').post((request, response) => {
     }
       else{
       response.status(200).json({result, message:"Error Inserting record or Duplicate account data!"})
-      console.log(result)  
+      console.log(user.NomineeCnicIssuance)  
       //  console.log(result.recordset.length)
     }
     
@@ -203,7 +203,7 @@ router.route('/createInvestment').post((request, response) => {
       response.status(200).json({result, message:"Investment resuest sended successfully"})
     }
       else{
-      response.status(409).json({result, message:"Error Inserting record or Duplicate account data!"})
+      response.status(409).json({result, message:"Error Creating investment request"})
       // console.log(result)  
       //  console.log(result.recordset.length)
     }
