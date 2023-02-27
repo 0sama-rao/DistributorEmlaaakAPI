@@ -298,7 +298,7 @@ async function addUser(user) {
       .input('InvestmentAmountPerYear', sql.VarChar, user.InvestmentAmountPerYear)
       .input('AnnualIncome', sql.Bit, user.AnnualIncome)
       .input('Occupation', sql.Bit, user.Occupation)
-      .input('AccountOpeningAcceptance', sql.Char, user.AccountOpeningAcceptance)
+      .input('AccountOpeningAccept ance', sql.Char, user.AccountOpeningAcceptance)
       .input('TermsAndCondition', sql.Char, user.TermsAndCondition)
       .input('IsInvestorOwnMobileNo', sql.Char, user.IsInvestorOwnMobileNo)
       .input('InvestedBySelf', sql.Char, user.InvestedBySelf)
@@ -547,6 +547,7 @@ async function addUser(user) {
         }
         
       };
+      
   module.exports = {
     addUser:addUser,
     getUsers:getUsers,
