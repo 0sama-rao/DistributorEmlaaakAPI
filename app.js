@@ -132,8 +132,8 @@ router.route('/createAccountSSA').post((request, response) => {
       response.status(200).json({result, message:"Record inserted"})
     }
       else{
-      response.status(200).json({result, message:"Error Inserting record or Duplicate account data!"})
-      console.log(user.NomineeCnicIssuance)  
+      response.status(409).json({result, message:"Error Inserting record or Duplicate account data!"})
+      // console.log(user.NomineeCnicIssuance)  
       //  console.log(result.recordset.length)
     }
     
