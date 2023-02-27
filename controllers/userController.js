@@ -1,6 +1,7 @@
 var  config = require('../dbconfig');
 const  sql = require('mssql');
 const schema = require ('../validations/userValidation');
+const moment = require('moment');
 const { response } = require('express');
 
 // const body = req.body;
@@ -113,20 +114,35 @@ async function addUser(user) {
     try {
       let pool = await sql.connect(config);
       
+      // const moment = require('moment');
+
+// const date = moment(user.NomineeCnicIssuance, 'YYYY-MM-DD'); // parse date using format 'DD/MM/YYYY'
+
+// if (!date.isValid()) {
+//   console.log("date format invalid")
+// }
+
+
+
+// if (isNaN(date.getTime())) {
+//   // handle invalid date format
+// }
 
       // let record = result.rowsAffected[0] ;
       
-
+      // const emlaakTransactionId = user.emlaakTransactionId.toUpperCase();
+      const date = new Date(user.NomineeCnicIssuance);
       let insertUser = await pool.request()
-      .input('emlaakTransactionId', sql.UniqueIdentifier, user.emlaakTransactionId)
-      .input('Title', sql.VarChar, user.Title)
-      .input('FullName', sql.VarChar, user.FullName)
-      .input('principleCnic', sql.VarChar, user.principleCnic)
-      .input('principleCnicIssuance', sql.Date, user.principleCnicIssuance)
-      .input('principleCnicExpiry', sql.Date, user.principleCnicExpiry)
-      .input('Email', sql.VarChar, user.Email)
-      .input('bankAccountTilte', sql.VarChar, user.bankAccountTilte)
-      .input('Iban', sql.VarChar, user.Iban)
+  
+      .input('EmlaakTransactionId', sql.UniqueIdentifier, user.EmlaakTransactionId, { sensitivity: 'base' })
+      .input('Title', sql.VarChar, user.Title, {sensitivity: 'none' })
+      .input('FullName', sql.VarChar, user.FullName, {sensitivity: 'base' })
+      .input('PrincipleCnic', sql.VarChar, user.principleCnic, {sensitivity: 'base' })
+      .input('PrincipleCnicIssuance', sql.Date, user.principleCnicIssuance, {sensitivity: 'base' })
+        .input('PrincipleCnicExpiry', sql.Date, user.principleCnicExpiry, {sensitivity: 'base' })
+      .input('Email', sql.VarChar, user.Email, {sensitivity: 'base' })
+      .input('BankAccountTilte', sql.VarChar, user.bankAccountTilte, {sensitivity: 'base' })
+      .input('Iban', sql.VarChar, user.Iban, {sensitivity: 'base' })
       .input('Bank', sql.VarChar, user.Bank)
       .input('MobileNo', sql.VarChar, user.MobileNo)
       .input('FatherSpouse', sql.VarChar, user.FatherSpouse)
@@ -134,7 +150,7 @@ async function addUser(user) {
       .input('Address', sql.VarChar, user.Address)
       .input('Nominee', sql.VarChar, user.Nominee)
       .input('NomineeCnic', sql.VarChar, user.NomineeCnic)
-      .input('NomineeCnicIssuance', sql.Date, user.NomineeCnicIssuance)
+      .input('NomineeCnicIssuance', sql.VarChar,user.NomineeCnicIssuance )
       .input('NomineeCnicExpiry', sql.Date, user.NomineeCnicExpiry)
       .input('SourceOfIncome', sql.VarChar, user.SourceOfIncome)
       .input('AccountCategory', sql.VarChar, user.AccountCategory)
@@ -152,7 +168,7 @@ async function addUser(user) {
       .input('InvestmentObjective', sql.VarChar, user.InvestmentObjective)
       .input('RiskAppetite', sql.VarChar, user.RiskAppetite)
       .input('FinalScore', sql.VarChar, user.FinalScore)
-      .input('occupation', sql.VarChar, user.occupation)
+      .input('Occupation', sql.VarChar, user.occupation)
       .input('ZakatStatus', sql.VarChar, user.ZakatStatus)
       .input('ZakatFile', sql.NVarChar, user.ZakatFile)
       .input('ZakatFileExtension', sql.VarChar, user.ZakatFileExtension)
@@ -172,14 +188,14 @@ async function addUser(user) {
       .input('DistributorCode', sql.Int, user.DistributorCode)
       //.input('folioNumber', sql.Int, user.folioNumber)
       .input('Posted', sql.Char, user.Posted)
-      .input('city', sql.VarChar, user.city)
+      .input('City', sql.VarChar, user.city)
       // .input('InvestedBySelf', sql.Char, user.InvestedBySelf)
       // .input('InvestedBySelf', sql.Char, user.InvestedBySelf)
 
 
       
-      .query(`insert into DistributorAccountSSA (emlaakTransactionId, Title, FullName,principleCnic, principleCnicIssuance, principleCnicExpiry, Email, bankAccountTilte, Iban, Bank, MobileNo, FatherSpouse, DateOfBirth, Address, Nominee, NomineeCnicIssuance, NomineeCnicExpiry, SourceOfIncome, AccountCategory, PrincipleNadraFile, PrincipleNadraExtension, NomineeNadraFile, NomineeNadraExtension, NomineeContactNo, MotherMaideName, IsRiskProfiling, AgeBracket, InvestmentMatterKnowledge, MonthlyIncomeSaveRatio, HorizonOfInvestment, InvestmentObjective, RiskAppetite, FinalScore, occupation, ZakatStatus, ZakatFile, ZakatFileExtension, CountryOfResidence, CountryOfBirth, AccountOpeningAcceptance, TermsAndCondition, IsInvestorOwnMobileNo, InvestedBySelf, ZakatStatusDeclaration, FrontEndLoanDeclaration, RiskLevel, BornInPakistan, PoliticallyExposedPerson, InvestedForOwn, RiskDisclaimer, DistributorCode, Posted, city) 
-      values(@emlaakTransactionId, @Title, @FullName, @principleCnic, @principleCnicIssuance, @principleCnicExpiry, @Email, @bankAccountTilte, @Iban, @Bank, @MobileNo, @FatherSpouse, @DateOfBirth, @Address, @Nominee, @NomineeCnicIssuance, @NomineeCnicExpiry, @SourceOfIncome, @AccountCategory, @PrincipleNadraFile, @PrincipleNadraExtension, @NomineeNadraFile, @NomineeNadraExtension, @NomineeContactNo, @MotherMaideName, @IsRiskProfiling, @AgeBracket, @InvestmentMatterKnowledge, @MonthlyIncomeSaveRatio, @HorizonOfInvestment, @InvestmentObjective, @RiskAppetite, @FinalScore, @occupation, @ZakatStatus, @ZakatFile, @ZakatFileExtension, @CountryOfResidence, @CountryOfBirth, @AccountOpeningAcceptance, @TermsAndCondition, @IsInvestorOwnMobileNo, @InvestedBySelf, @ZakatStatusDeclaration, @FrontEndLoanDeclaration, @RiskLevel, @BornInPakistan, @PoliticallyExposedPerson, @InvestedForOwn, @RiskDisclaimer, @DistributorCode, @Posted, @city)`);
+      .query(`insert into DistributorAccountSSA (EmlaakTransactionId, Title, FullName,PrincipleCnic, PrincipleCnicIssuance, PrincipleCnicExpiry, Email, BankAccountTilte, Iban, Bank, MobileNo, FatherSpouse, DateOfBirth, Address, Nominee, NomineeCnicIssuance, NomineeCnicExpiry, SourceOfIncome, AccountCategory, PrincipleNadraFile, PrincipleNadraExtension, NomineeNadraFile, NomineeNadraExtension, NomineeContactNo, MotherMaideName, IsRiskProfiling, AgeBracket, InvestmentMatterKnowledge, MonthlyIncomeSaveRatio, HorizonOfInvestment, InvestmentObjective, RiskAppetite, FinalScore, Occupation, ZakatStatus, ZakatFile, ZakatFileExtension, CountryOfResidence, CountryOfBirth, AccountOpeningAcceptance, TermsAndCondition, IsInvestorOwnMobileNo, InvestedBySelf, ZakatStatusDeclaration, FrontEndLoanDeclaration, RiskLevel, BornInPakistan, PoliticallyExposedPerson, InvestedForOwn, RiskDisclaimer, DistributorCode, Posted, City) 
+      values(@EmlaakTransactionId, @Title, @FullName, @PrincipleCnic, @PrincipleCnicIssuance, @PrincipleCnicExpiry, @Email, @BankAccountTilte, @Iban, @Bank, @MobileNo, @FatherSpouse, @DateOfBirth, @Address, @Nominee, @NomineeCnicIssuance, @NomineeCnicExpiry, @SourceOfIncome, @AccountCategory, @PrincipleNadraFile, @PrincipleNadraExtension, @NomineeNadraFile, @NomineeNadraExtension, @NomineeContactNo, @MotherMaideName, @IsRiskProfiling, @AgeBracket, @InvestmentMatterKnowledge, @MonthlyIncomeSaveRatio, @HorizonOfInvestment, @InvestmentObjective, @RiskAppetite, @FinalScore, @Occupation, @ZakatStatus, @ZakatFile, @ZakatFileExtension, @CountryOfResidence, @CountryOfBirth, @AccountOpeningAcceptance, @TermsAndCondition, @IsInvestorOwnMobileNo, @InvestedBySelf, @ZakatStatusDeclaration, @FrontEndLoanDeclaration, @RiskLevel, @BornInPakistan, @PoliticallyExposedPerson, @InvestedForOwn, @RiskDisclaimer, @DistributorCode, @Posted, @City)`);
       
       // const existingRecord = await insertUser.findOne({Title: Title});
       // if(existingRecord){
@@ -233,14 +249,14 @@ async function addUser(user) {
     try {
       let pool = await sql.connect(config);
       let insertUser = await pool.request()
-      .input('emlaakTransactionId', sql.UniqueIdentifier, user.emlaakTransactionId)
+      .input('EmlaakTransactionId', sql.UniqueIdentifier, user.EmlaakTransactionId)
       .input('Title', sql.VarChar, user.Title)
       .input('FullName', sql.VarChar, user.FullName)
-      .input('principleCnic', sql.VarChar, user.principleCnic)
-      .input('principleCnicIssuance', sql.Date, user.principleCnicIssuance)
-      .input('principleCnicExpiry', sql.Date, user.principleCnicExpiry)
+      .input('PrincipleCnic', sql.VarChar, user.PrincipleCnic)
+      .input('PrincipleCnicIssuance', sql.Date, user.PrincipleCnicIssuance)
+      .input('PrincipleCnicExpiry', sql.Date, user.PrincipleCnicExpiry)
       .input('Email', sql.VarChar, user.Email)
-      .input('bankAccountTilte', sql.VarChar, user.bankAccountTilte)
+      .input('BankAccountTilte', sql.VarChar, user.BankAccountTilte)
       .input('Iban', sql.VarChar, user.Iban)
       .input('Bank', sql.VarChar, user.Bank)
       .input('MobileNo', sql.VarChar, user.MobileNo)
@@ -268,9 +284,9 @@ async function addUser(user) {
       .input('ZakatStatus', sql.VarChar, user.ZakatStatus)
       .input('CountryOfBirth', sql.Bit, user.CountryOfBirth)
       .input('CountryOfResidence', sql.Bit, user.CountryOfResidence)
-      .input('taxIdentificationNo', sql.VarChar, user.taxIdentificationNo)
-      .input('passportNo', sql.Bit, user.passportNo)
-      .input('noofDependent', sql.VarChar, user.noofDependent)
+      .input('TaxIdentificationNo', sql.VarChar, user.TaxIdentificationNo)
+      .input('PassportNo', sql.Bit, user.passportNo)
+      .input('NoofDependent', sql.VarChar, user.NoofDependent)
       .input('Education', sql.Bit, user.Education)
       .input('NomineeContactNo', sql.VarChar, user.NomineeContactNo)
       .input('FatCaCrsDetails', sql.Bit, user.FatCaCrsDetails)
@@ -305,14 +321,14 @@ async function addUser(user) {
       .input('ZakatDeclaration', sql.Char, user.ZakatDeclaration)
       .input('FrontEndLoanDeclaration', sql.Char, user.FrontEndLoanDeclaration)
       .input('RiskLevel', sql.Bit, user.RiskLevel)
-      .input('RiskDisclaimer', sql.Char, user.RiskDisclaimer)
+      .input('RiskDisclaimer', sql.Char, user.RiskDisclaimer) 
       .input('City', sql.VarChar, user.City)
       .input('DistributorCode', sql.Int, user.DistributorCode)
 
 
 
-      .query(`insert into DistributorRegularAccount (emlaakTransactionId, Title, FullName,principleCnic, principleCnicIssuance, principleCnicExpiry, Email, bankAccountTilte,           Iban, Bank, MobileNo,   DateOfBirth, Address, Nominee, NomineeCnicIssuance, NomineeCnicExpiry,      SourceOfIncome, AgeBracket, InvestmentMatterKnowledge,    MonthlyIncomeSaveRatio,  HorizonOfInvestment, InvestmentObjective,    RiskAppetite, FinalScore, NomineeRelation, PresentAddress,     FatherSpouse, MobilePersonName, MobilePersonRelation, MotherMaidenName, DividendMandate,     ZakatStatus, CountryOfBirth, CountryOfResidence,    taxIdentificationNo, passportNo, noofDependent, Education, NomineeContactNo,      FatCaCrsDetails, Kyc1_US_GreenCardHolder, Kyc2_TransferToUS_BasedAccount,     Kyc3_PowerOfAttorney_AuthorizedSignatory_MandateHolder_USAddress, Kyc4_USTelephone,Kyc5_TaxResidenceyOtherThanPak,    Kyc6_TaxResidenceyOtherThanPakAndUS, Kyc7_RelationWithPoliticallyExposedPerson,    Kyc8_SeniorPositionInGovInstitution, Kyc9_FinancialLinksToOffshoreTaxHavens, Kyc10_DealInPreciousMetals, PrincipleNadraFile, PrincipleNadraExtension, NomineeNadraFile, NomineeNadraExtension,ProofOfIncomeFile, ProofOfIncomeExtension, FatCaFile, FatCaFieExtention, ZakatFile, ZakatFileExtention, InvestmentTransactionPerYear, InvestmentAmountPerYear, AnnualIncome, Occupation, AccountOpeningAcceptance, TermsAndCondition, IsInvestorOwnMobileNo, InvestedBySelf, ZakatDeclaration, FrontEndLoanDeclaration, RiskLevel, RiskDisclaimer, City, DistributorCode) 
-                                              values(@emlaakTransactionId, @Title, @FullName, @principleCnic, @principleCnicIssuance, @principleCnicExpiry, @Email, @bankAccountTilte, @Iban, @Bank, @MobileNo, @DateOfBirth, @Address, @Nominee, @NomineeCnicIssuance, @NomineeCnicExpiry, @SourceOfIncome, @AgeBracket, @InvestmentMatterKnowledge, @MonthlyIncomeSaveRatio, @HorizonOfInvestment, @InvestmentObjective, @RiskAppetite, @FinalScore, @NomineeRelation, @PresentAddress, @FatherSpouse, @MobilePersonName, @MobilePersonRelation, @MotherMaidenName, @DividendMandate, @ZakatStatus, @CountryOfBirth, @CountryOfResidence, @taxIdentificationNo, @passportNo, @noofDependent, @Education, @NomineeContactNo, @FatCaCrsDetails, @Kyc1_US_GreenCardHolder, @Kyc2_TransferToUS_BasedAccount, @Kyc3_PowerOfAttorney_AuthorizedSignatory_MandateHolder_USAddress, @Kyc4_USTelephone, @Kyc5_TaxResidenceyOtherThanPak, @Kyc6_TaxResidenceyOtherThanPakAndUS, @Kyc7_RelationWithPoliticallyExposedPerson, @Kyc8_SeniorPositionInGovInstitution, @Kyc9_FinancialLinksToOffshoreTaxHavens,@Kyc10_DealInPreciousMetals,@PrincipleNadraFile, @PrincipleNadraExtension, @NomineeNadraFile, @NomineeNadraExtension, @ProofOfIncomeFile, @ProofOfIncomeExtension, @FatCaFile, @FatCaFieExtention, @ZakatFile, @ZakatFileExtention, @InvestmentTransactionPerYear, @InvestmentAmountPerYear, @AnnualIncome, @Occupation, @AccountOpeningAcceptance, @TermsAndCondition, @IsInvestorOwnMobileNo, @InvestedBySelf, @ZakatDeclaration, @FrontEndLoanDeclaration, @RiskLevel, @RiskDisclaimer, @City, @DistributorCode)`);
+      .query(`insert into DistributorRegularAccount (EmlaakTransactionId, Title, FullName,PrincipleCnic, PrincipleCnicIssuance, PrincipleCnicExpiry, Email, BankAccountTilte,           Iban, Bank, MobileNo,   DateOfBirth, Address, Nominee, NomineeCnicIssuance, NomineeCnicExpiry,      SourceOfIncome, AgeBracket, InvestmentMatterKnowledge,    MonthlyIncomeSaveRatio,  HorizonOfInvestment, InvestmentObjective,    RiskAppetite, FinalScore, NomineeRelation, PresentAddress,     FatherSpouse, MobilePersonName, MobilePersonRelation, MotherMaidenName, DividendMandate,     ZakatStatus, CountryOfBirth, CountryOfResidence,    TaxIdentificationNo, PassportNo, NoofDependent, Education, NomineeContactNo,      FatCaCrsDetails, Kyc1_US_GreenCardHolder, Kyc2_TransferToUS_BasedAccount,     Kyc3_PowerOfAttorney_AuthorizedSignatory_MandateHolder_USAddress, Kyc4_USTelephone,Kyc5_TaxResidenceyOtherThanPak,    Kyc6_TaxResidenceyOtherThanPakAndUS, Kyc7_RelationWithPoliticallyExposedPerson,    Kyc8_SeniorPositionInGovInstitution, Kyc9_FinancialLinksToOffshoreTaxHavens, Kyc10_DealInPreciousMetals, PrincipleNadraFile, PrincipleNadraExtension, NomineeNadraFile, NomineeNadraExtension,ProofOfIncomeFile, ProofOfIncomeExtension, FatCaFile, FatCaFieExtention, ZakatFile, ZakatFileExtention, InvestmentTransactionPerYear, InvestmentAmountPerYear, AnnualIncome, Occupation, AccountOpeningAcceptance, TermsAndCondition, IsInvestorOwnMobileNo, InvestedBySelf, ZakatDeclaration, FrontEndLoanDeclaration, RiskLevel, RiskDisclaimer, City, DistributorCode) 
+                                              values(@EmlaakTransactionId, @Title, @FullName, @PrincipleCnic, @PrincipleCnicIssuance, @PrincipleCnicExpiry, @Email, @BankAccountTilte, @Iban, @Bank, @MobileNo, @DateOfBirth, @Address, @Nominee, @NomineeCnicIssuance, @NomineeCnicExpiry, @SourceOfIncome, @AgeBracket, @InvestmentMatterKnowledge, @MonthlyIncomeSaveRatio, @HorizonOfInvestment, @InvestmentObjective, @RiskAppetite, @FinalScore, @NomineeRelation, @PresentAddress, @FatherSpouse, @MobilePersonName, @MobilePersonRelation, @MotherMaidenName, @DividendMandate, @ZakatStatus, @CountryOfBirth, @CountryOfResidence, @TaxIdentificationNo, @PassportNo, @NoofDependent, @Education, @NomineeContactNo, @FatCaCrsDetails, @Kyc1_US_GreenCardHolder, @Kyc2_TransferToUS_BasedAccount, @Kyc3_PowerOfAttorney_AuthorizedSignatory_MandateHolder_USAddress, @Kyc4_USTelephone, @Kyc5_TaxResidenceyOtherThanPak, @Kyc6_TaxResidenceyOtherThanPakAndUS, @Kyc7_RelationWithPoliticallyExposedPerson, @Kyc8_SeniorPositionInGovInstitution, @Kyc9_FinancialLinksToOffshoreTaxHavens,@Kyc10_DealInPreciousMetals,@PrincipleNadraFile, @PrincipleNadraExtension, @NomineeNadraFile, @NomineeNadraExtension, @ProofOfIncomeFile, @ProofOfIncomeExtension, @FatCaFile, @FatCaFieExtention, @ZakatFile, @ZakatFileExtention, @InvestmentTransactionPerYear, @InvestmentAmountPerYear, @AnnualIncome, @Occupation, @AccountOpeningAcceptance, @TermsAndCondition, @IsInvestorOwnMobileNo, @InvestedBySelf, @ZakatDeclaration, @FrontEndLoanDeclaration, @RiskLevel, @RiskDisclaimer, @City, @DistributorCode)`);
 
       
         // if('userName'== user.userName in sql ){

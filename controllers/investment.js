@@ -141,7 +141,7 @@ async function createInvestment(item) {
     try {
       let pool = await sql.connect(config);
       let insertInvestment = await pool.request()
-      .input('emlaakTransactionId', sql.UniqueIdentifier, item.emlaakTransactionId)
+      .input('emlaakTransactionId', sql.UniqueIdentifier, item.emlaakTransactionId.toUpperCase())
                 .input('FundName', sql.VarChar, item.FundName)
                 .input('Amount', sql.VarChar, item.Amount)
                 .input('ConfirmIBAN', sql.VarChar, item.ConfirmIBAN)
