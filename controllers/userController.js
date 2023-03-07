@@ -139,7 +139,7 @@ async function addUser(user) {
       .input('FullName', sql.VarChar, user.FullName)
       .input('PrincipleCnic', sql.VarChar, user.principleCnic)
       .input('PrincipleCnicIssuance', sql.Date, user.principleCnicIssuance)
-        .input('PrincipleCnicExpiry', sql.Date, user.principleCnicExpiry)
+      .input('PrincipleCnicExpiry', sql.Date, user.principleCnicExpiry)
       .input('Email', sql.VarChar, user.Email)
       .input('BankAccountTilte', sql.VarChar, user.bankAccountTilte)
       .input('Iban', sql.VarChar, user.Iban)
@@ -564,6 +564,8 @@ async function addUser(user) {
         
       };
       
+      
+      
   module.exports = {
     addUser:addUser,
     getUsers:getUsers,
@@ -576,4 +578,5 @@ async function addUser(user) {
     updateRiskProfiling:updateRiskProfiling
     // createAccountSSAeg:createAccountSSAeg,
     // CheckaddUser:CheckaddUser
+   
   }
