@@ -36,8 +36,10 @@ async function newAccountPost(user) {
     .input('CnicDOI', sql.NVarChar, user.CnicDOI)
     .input('CnicDOE', sql.NVarChar, user.CnicDOE)
     .input('Address', sql.NVarChar, user.Address)
-    .input('City', sql.NVarChar, user.City)
+    .input('City', sql.VarChar, user.City)
+    .input('Province', sql.NVarChar, user.Province)
     .input('NomineeName', sql.NVarChar, user.NomineeName)
+    .input('NomineeCNIC', sql.VarChar, user.NomineeCNIC)
     .input('DateOfBirth', sql.NVarChar, user.DateOfBirth)
     .input('CountryOfResidence', sql.NVarChar, user.CountryOfResidence)
     .input('CitizenshipStatus', sql.NVarChar, user.CitizenshipStatus)
@@ -83,6 +85,63 @@ async function newAccountPost(user) {
     }
   }
 
+  
+async function createInvestment(item) {
+  try{
+
+    let pool = await sql.connect(config);
+    let request = await pool.request()
+    .input('TransactionNumber', sql.Int, item.TransactionNumber)
+
+    .query(`select TransactionNumber from YPayInvestmentRequest where TransactionNumber =@TransactionNumber`)
+
+    if (request.recordset.length > 0){
+      console.log(request.recordset.length)
+      
+      return (false,{message: "Investment Already exist with the following TransactionNumber"})
+
+    }
+  else if (request.recordset.length == 0){
+  
+  
+  try { 
+    
+    let insertInvestment2 = await pool.request()
+              .input('TransactionNumber', sql.Int, item.TransactionNumber)
+              .input('CustomerFolioNumber', sql.Int, item.CustomerFolioNumber)
+              .input('FundID', sql.VarChar, item.FundID)
+              .input('Timestamp', sql.VarChar, item.Timestamp)
+              .input('Amount', sql.VarChar, item.Amount)
+              .input('PaymentProof', sql.VarChar, item.OneLinkTransactionID)
+              .input('SalesLoadStatus', sql.VarChar, item.SalesLoadStatus)
+              .input('ModeOfPayment', sql.VarChar, item.ModeOfPayment)
+
+              
+              
+              .query(`INSERT INTO YPayInvestmentRequest (TransactionNumber, CustomerFolioNumber, FundID, TimeStamp, Amount, PaymentProof, SalesLoadStatus, ModeOfPayment) 
+              VALUES (@TransactionNumber, @CustomerFolioNumber, @FundID, @TimeStamp, @Amount, @PaymentProof, @SalesLoadStatus, @ModeOfPayment )`);
+    
+    
+    
+    //console.log(insertInvestment)
+    //console.log(recordset.insertInvestment2.length)
+    // return insertUser.recordsets;
+    return true;
+  }
+  
+  catch(err){
+    console.log(err)
+  //  console.log(insertInvestment2)
+  }
+}
+} 
+  catch (err) { 
+   // return (false, err);
+    console.log(err+"Error");
+//    console.log(insertInvestment2)
+  }
+}
   module.exports ={
-    newAccountPost:newAccountPost
+    newAccountPost:newAccountPost,
+    createInvestment:createInvestment
   }
