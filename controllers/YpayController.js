@@ -63,8 +63,8 @@ async function newAccountPost(user) {
     .input('DistributorCode', sql.NVarChar, user.DistributorCode)
     
 
-    .query(`insert into YPayAccountSSA (FullName, FatherName, MotherName, Mobile, Email, Cnic, CnicDOI, CnicDOE, Address,City,NomineeName, DateOfBirth,CountryOfResidence,CitizenshipStatus,Gender, CnicFrontImage, CnicBackImage, SourceOfIncome,Occupation,ProofOfIncome, BankName, BranchName, AccountNumber,IBan, ZakatDeduction, CZ50From, FactaCheck, PEPCheck, MartialStatus, RiskProfilingQ ,Posted, DistributorCode) 
-    values     (@FullName, @FatherName, @MotherName , @Mobile, @Email, @Cnic, @CnicDOI, @CnicDOE, @Address, @City, @NomineeName,@DateOfBirth, @CountryOfResidence,@CitizenshipStatus,@Gender,@CnicFrontImage, @CnicBackImage,@SourceOfIncome, @Occupation,@ProofOfIncome,@BankName,@BranchName,@AccountNumber,@IBan, @ZakatDeduction, @CZ50From, @FactaCheck, @PEPCheck,@MartialStatus, @RiskProfilingQ, @Posted, @DistributorCode )`);
+    .query(`insert into YPayAccountSSA (FullName, FatherName, MotherName, Mobile, Email, Cnic, CnicDOI, CnicDOE, Address,City,Province, NomineeName,NomineeCNIC, DateOfBirth,CountryOfResidence,CitizenshipStatus,Gender, CnicFrontImage, CnicBackImage, SourceOfIncome,Occupation,ProofOfIncome, BankName, BranchName, AccountNumber,IBan, ZakatDeduction, CZ50From, FactaCheck, PEPCheck, MartialStatus, RiskProfilingQ ,Posted, DistributorCode) 
+    values     (@FullName, @FatherName, @MotherName , @Mobile, @Email, @Cnic, @CnicDOI, @CnicDOE, @Address, @City,@Province , @NomineeName,@NomineeCNIC, @DateOfBirth, @CountryOfResidence,@CitizenshipStatus,@Gender,@CnicFrontImage, @CnicBackImage,@SourceOfIncome, @Occupation,@ProofOfIncome,@BankName,@BranchName,@AccountNumber,@IBan, @ZakatDeduction, @CZ50From, @FactaCheck, @PEPCheck,@MartialStatus, @RiskProfilingQ, @Posted, @DistributorCode )`);
 
 
     console.log(request.recordsets.length)

@@ -574,7 +574,8 @@ async function addUser(user) {
     createAccountRegular:createAccountRegular,
     //CheckAccountSSA:CheckAccountSSA,
     CheckAccountRegular:CheckAccountRegular,
-    createAccountCallback:createAccountCallaback,
+    createAccountCallback:createAccountCallback,
+    //createAccountCallback:createAccountCallaback,
     updateRiskProfiling:updateRiskProfiling
     // createAccountSSAeg:createAccountSSAeg,
     // CheckaddUser:CheckaddUser
