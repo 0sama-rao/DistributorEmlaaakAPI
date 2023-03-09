@@ -186,7 +186,7 @@ router.route('/updateRiskProfiling').post((request, response) => {
 })
 
 
-router.route('/ypayAccount').post((request, response) => {
+router.route('/ypaypostAccount').post((request, response) => {
   let user = {...request.body}
   
    db2.newAccountPost(user).then(function(result, RequestError) {
@@ -197,7 +197,7 @@ router.route('/ypayAccount').post((request, response) => {
     }
       
       else{
-      response.status(400).json({result,RequestError, message:"Error Inserting record or Duplicate account data!"})
+      response.status(409).json({result,RequestError, request:"False"})
       // console.log(user)  
        //console.log(user)
     }
@@ -205,6 +205,26 @@ router.route('/ypayAccount').post((request, response) => {
   })
 })
 
+
+
+router.route('/postInvestment').post((request, response) => {
+  let item = {...request.body}
+  
+   db2.createInvestment(item).then(function(result, RequestError) {
+
+  //   response.status(200).json(err)
+    if(result == true){
+      response.status(200).json({result, message:"Record Inserted"})
+    }
+      
+      else{
+      response.status(409).json({result,RequestError, request:"False"})
+      console.log(item)  
+       //console.log(user)
+    }
+    
+  })
+})
 
 
 
